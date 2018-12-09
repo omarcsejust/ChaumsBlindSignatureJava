@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ChaumBlindSignature {
@@ -21,9 +22,15 @@ public class ChaumBlindSignature {
 		System.out.println("Choose an integer");
 		int e = scanner.nextInt();
 		
-		BigInteger data = helper.calculateD(fiOfn, e);
+		BigInteger d = helper.calculateD(fiOfn, e);
 		
-		System.out.println(data);
+		//System.out.println("Input your message");
+		//BigInteger m = scanner.nextBigInteger();
+		
+		BigInteger r = helper.generateRandomNumberBetweenN(n);
+		
+		System.out.println(n);
+		System.out.println(r);
 		
 		
 		
