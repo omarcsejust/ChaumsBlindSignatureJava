@@ -9,31 +9,24 @@ public class ChaumBlindSignature {
 		Helper helper = new Helper();
 		Scanner scanner = new Scanner(System.in);
 		
-		BigInteger p = new BigInteger("255718554125660544195172654530737050391");
-		BigInteger q = new BigInteger("171764555308926962724905545149993791827");
+		BigInteger phi_n = Components.p.subtract(BigInteger.ONE).multiply(Components.q.subtract(BigInteger.ONE));
+		BigInteger n = Components.p.multiply(Components.q);
 		
-		BigInteger e = new BigInteger("206126578863562291471009007705531899859");
-		BigInteger d = new BigInteger("3097325324669114045574261029306396823811404845714915716047145852388990536439");
-		
-		BigInteger r = new BigInteger("1741948824");
-		
-		BigInteger phi_n = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
-		BigInteger n = p.multiply(q);
-		
+		// input your message
 		System.out.println("Input your message");
 		BigInteger msg = scanner.nextBigInteger();
 		
 		// blinding phase
-		BigInteger blindMsg = helper.blindMessage(r, msg, n, e);
+		BigInteger blindMsg = helper.blindMessage(Components.r, msg, n, Components.e);
 		
 		// signing phase
-		BigInteger signMsg = helper.signMessage(blindMsg, d, n);
+		BigInteger signMsg = helper.signMessage(blindMsg, Components.d, n);
 		
 		//unblind phase
-		BigInteger unblindMsg = helper.unblindMessage(signMsg, r, n);
+		BigInteger unblindMsg = helper.unblindMessage(signMsg, Components.r, n);
 		
 		// verify phase
-		BigInteger verifyMsg = unblindMsg.modPow(e, n);
+		BigInteger verifyMsg = unblindMsg.modPow(Components.e, n);
 		
 		System.out.println("Your Message: "+msg);
 		System.out.println("Bling Message: "+blindMsg);
