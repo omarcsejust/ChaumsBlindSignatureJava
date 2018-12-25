@@ -3,19 +3,24 @@ import java.util.Random;
 
 public class Helper {
 	
-	public BigInteger calculateD(BigInteger fiOfn, int e) {
-		BigInteger d = null;
-		BigInteger product = fiOfn.multiply(new BigInteger("2")).add(new BigInteger("1"));
-		d = product.divide(new BigInteger(Integer.toString(e)));
-		return d;
+	// method for blinding the message using user public keys e,n
+	public BigInteger blindMessage(BigInteger r, BigInteger m, BigInteger n, BigInteger e) {
+		BigInteger cipher = r.modPow(e, n);
+		BigInteger blingMsg = cipher.multiply(m);
+		return blingMsg;
 	}
 	
-	public BigInteger generateRandomNumberBetweenN(BigInteger n) {
-		// TODO Auto-generated method stub
-		Random random = new Random();
-		BigInteger r = new BigInteger(n.bitLength(),random);
-		return r;
+	// signer sign the message using private key d
+	public BigInteger signMessage(BigInteger blindMessage, BigInteger d, BigInteger n) {
+		BigInteger sign = blindMessage.modPow(d, n);
+		return sign;
+	}
 	
+	// message is being unblinded
+	public BigInteger unblindMessage(BigInteger sign, BigInteger r, BigInteger n) {
+		BigInteger r_inv = r.modInverse(n);
+		BigInteger unblindMsg = (sign.multiply(r_inv)).mod(n);
+		return unblindMsg;
 	}
 
 }
